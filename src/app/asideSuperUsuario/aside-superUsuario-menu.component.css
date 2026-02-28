@@ -1,0 +1,310 @@
+/* ===============================
+   VARIABLES
+=================================*/
+:host {
+  --navy: #0f1f3d;
+  --navy-mid: #1a3260;
+  --accent: #3b82f6;
+  --accent-light: #dbeafe;
+  --teal: #0ea5e9;
+  --danger: #ef4444;
+  --text-light: rgb(255, 255, 255);
+  --text-muted: rgb(179, 213, 245);
+  --sidebar-w: 230px;
+}
+
+/* ===============================
+   SIDEBAR CONTAINER
+=================================*/
+.sidebar {
+  width: var(--sidebar-w);
+  height: 100vh; /* altura fija para que el scroll funcione */
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.25);
+  overflow: hidden; /* evita que el sidebar mismo tenga scroll */
+}
+
+/* ===============================
+   LOGO
+=================================*/
+.sidebar-logo {
+  flex-shrink: 0; /* no se encoge con el scroll */
+  padding: 26px 20px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/*Alzaid icon logo*/
+.logo-icon {
+  width: 100%;
+  height: 100px;
+  border-radius: 12px;
+  background-image: url('/img/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.logo-text {
+  color: white;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ===============================
+   ADMIN INFO
+=================================*/
+.sidebar-admin {
+  flex-shrink: 0; /* no se encoge con el scroll */
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-badge {
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #93c5fd;
+}
+
+.admin-badge strong {
+  display: block;
+  color: white;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+/* ===============================
+   ZONA DE SCROLL
+=================================*/
+.sidebar-scroll {
+  flex: 1; /* ocupa todo el espacio disponible */
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Scrollbar delgada */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* ===============================
+   NAVIGATION
+=================================*/
+.sidebar-nav {
+  padding: 14px 0;
+}
+
+.nav-section {
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* ITEM BASE */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  position: relative;
+}
+
+/* ===============================
+   ICONOS BLANCOS con filter
+=================================*/
+.icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  /* convierte cualquier SVG a blanco */
+  filter: brightness(0) invert(1);
+  transition: filter 0.18s ease;
+}
+
+.icon-sub {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+}
+
+/* Hover */
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+}
+
+/* Active (routerLinkActive) */
+.nav-item.active {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+/* Ícono activo en azul claro */
+.nav-item.active .icon {
+  filter: brightness(0) saturate(100%) invert(72%) sepia(50%) saturate(400%) hue-rotate(195deg)
+    brightness(105%);
+}
+
+/* ===============================
+   EXPANDABLE (ESTANCIAS)
+=================================*/
+.expandable {
+  justify-content: space-between;
+}
+
+.nav-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Flecha */
+.arrow {
+  width: 16px;
+  height: 16px;
+  stroke: var(--text-light);
+  transition: transform 0.25s ease;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+
+/* ===============================
+   SUBMENU
+=================================*/
+.submenu {
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.2s ease;
+}
+
+.nav-subitem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px 8px 44px;
+  font-size: 15px;
+  color: var(--text-light);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.nav-subitem:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.nav-subitem.active {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+
+.nav-subitem.active .icon-sub {
+  filter: brightness(0) saturate(100%) invert(85%) sepia(30%) saturate(300%) hue-rotate(195deg);
+  opacity: 1;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===============================
+   LOGOUT (fijo abajo)
+=================================*/
+.sidebar-bottom {
+  flex-shrink: 0; /* no se encoge con el scroll */
+  padding: 16px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logout {
+  color: #f87171 !important;
+}
+
+/* Ícono logout en rojo */
+.logout .icon {
+  filter: brightness(0) saturate(100%) invert(60%) sepia(60%) saturate(600%) hue-rotate(320deg)
+    brightness(110%);
+}
+
+.logout:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5 !important;
+  border-left-color: var(--danger);
+}
+
+/* ===============================
+   RESPONSIVE
+=================================*/
+@media (max-width: 900px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .logo-text,
+  .nav-item span,
+  .admin-badge {
+    display: none;
+  }
+
+  .nav-subitem {
+    padding-left: 20px;
+  }
+
+  .nav-subitem span {
+    display: none;
+  }
+}
