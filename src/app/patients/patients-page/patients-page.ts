@@ -1,46 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Patient } from '../../models/patient';
+import { SidebarComponent } from '../../shared/components/sidebar/sidebar';
+import { PatientService } from '../../services/patient';
 
 type PatientRow = Patient & { id: string };
 
 @Component({
   selector: 'app-patients-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SidebarComponent],
   templateUrl: './patients-page.html',
   styleUrl: './patients-page.css'
 })
-export class PatientsPage {
-  searchTerm = '';
+export class PatientsPage implements OnInit {
+  searchTerm: string = '';
+  patients: PatientRow[] = [];
 
-  patients: PatientRow[] = [
-    {
-      id: 'PAC-001',
-      name: 'Daniel López López',
-      age: 85,
-      profilePicture: 'https://i.pravatar.cc/80?img=12',
-      dementiaType: 'Alzheimer',
-      dementiaStage: 'Intermedia',
-      dateOfDiagnosis: new Date('2021-05-10'),
-      nameOfRelative: 'María López',
-      relationshipToRelative: 'Hija',
-      relativeContactInfo: '55-1234-5678',
-      weight: 70,
-      height: 1.68,
-      imc: 24.8,
-      corporalMass: 0,
-      muscularMass: 0,
-      boneMass: 0,
-      hipCircumference: 0,
-      dietType: 'Balanceada',
-      nutritionalNeeds: 'Proteína moderada',
-      alimentaryAllergies: 'Ninguna',
-      medicationAllergies: 'Penicilina'
-    }
-  ];
+  constructor(private patientService: PatientService) {}
+
+  ngOnInit(): void {
+    this.patientService.getPatients().subscribe({
+      next: (data: PatientRow[]) => {
+        this.patients = data;
+      },
+      error: (err: any) => {
+        console.error('Error al cargar pacientes:', err);
+      }
+    });
+  }
 
   get filteredPatients(): PatientRow[] {
     const t = this.searchTerm.trim().toLowerCase();
@@ -62,10 +52,11 @@ export class PatientsPage {
     return 'bg-secondary-subtle text-secondary';
   }
 
-  onAddPatient() { alert('Agregar paciente'); }
-  onView(p: PatientRow) { alert(`Ver ${p.id}`); }
-  onEdit(p: PatientRow) { alert(`Editar ${p.id}`); }
-  onDelete(p: PatientRow) {
+  // Métodos de acción
+  onAddPatient(): void { alert('Agregar paciente'); }
+  onView(p: PatientRow): void { alert(`Ver: ${p.name}`); }
+  onEdit(p: PatientRow): void { alert(`Editar: ${p.id}`); }
+  onDelete(p: PatientRow): void {
     if (!confirm(`¿Eliminar a ${p.name}?`)) return;
     this.patients = this.patients.filter(x => x.id !== p.id);
   }
