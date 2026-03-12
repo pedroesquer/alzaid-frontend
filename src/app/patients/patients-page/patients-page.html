@@ -1,17 +1,15 @@
 <div class="patients-layout">
+  <app-sidebar></app-sidebar>
 
-<app-sidebar></app-sidebar>
-  <!-- Content -->
   <main class="content">
     <div class="content-inner">
-      <!-- Top bar -->
       <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
         <div class="search-wrap flex-grow-1">
           <div class="input-group">
             <span class="input-group-text bg-white border-end-0">🔎</span>
             <input
               class="form-control border-start-0"
-              placeholder="Buscar por nombre, expediente o padecimiento..."
+              placeholder="Buscar por nombre, ID o padecimiento..."
               [(ngModel)]="searchTerm"
             />
           </div>
@@ -22,20 +20,19 @@
         </button>
       </div>
 
-      <!-- Table card -->
       <div class="card shadow-sm border-0">
         <div class="table-responsive">
           <table class="table align-middle mb-0">
             <thead class="table-head">
               <tr>
                 <th class="ps-4">PERFIL</th>
-                <th>EXPEDIENTE</th>
+                <th>ID</th>
                 <th>NOMBRE COMPLETO</th>
                 <th>EDAD</th>
                 <th>TIPO DEMENCIA</th>
                 <th>ETAPA</th>
-                <th>CONTACTO FAMILIAR</th>
-                <th>PARENTESCO</th>
+                <th>PESO</th>
+                <th>ALTURA</th>
                 <th class="text-center pe-4">ACCIONES</th>
               </tr>
             </thead>
@@ -43,23 +40,30 @@
             <tbody>
               <tr *ngFor="let p of filteredPatients">
                 <td class="ps-4">
-                  <img [src]="p.profilePicture" class="avatar" alt="perfil" />
+                  <div class="avatar placeholder-avatar">
+                    {{ p.fullName.charAt(0) }}
+                  </div>
                 </td>
+
                 <td>
                   <span class="badge rounded-pill bg-info-subtle text-info-emphasis">
-                    {{ p.id }}
+                    {{ p._id }}
                   </span>
                 </td>
-                <td class="fw-semibold">{{ p.name }}</td>
+
+                <td class="fw-semibold">{{ p.fullName }}</td>
                 <td>{{ p.age }} años</td>
                 <td>{{ p.dementiaType }}</td>
+
                 <td>
                   <span class="badge rounded-pill" [ngClass]="stageBadgeClass(p.dementiaStage)">
                     {{ p.dementiaStage }}
                   </span>
                 </td>
-                <td>{{ p.relativeContactInfo }}</td>
-                <td>{{ p.relationshipToRelative }}</td>
+
+                <td>{{ p.weight }}</td>
+                <td>{{ p.height }}</td>
+
                 <td class="text-center pe-4">
                   <div class="d-inline-flex gap-2">
                     <button class="btn btn-light btn-sm icon-btn" (click)="onView(p)" title="Ver">
@@ -84,7 +88,11 @@
           </table>
         </div>
       </div>
-
     </div>
   </main>
+
+  <app-new-patient
+    *ngIf="showNewPatientForm"
+    (cerrar)="closeNewPatientModal()">
+  </app-new-patient>
 </div>

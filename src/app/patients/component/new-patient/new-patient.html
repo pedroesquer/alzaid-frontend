@@ -1,0 +1,72 @@
+<div class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="modal-container">
+
+    <div class="modal-header">
+      <h2>Nuevo Paciente</h2>
+      <button class="close-btn" (click)="close()">×</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" formControlName="fullName">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Edad</label>
+          <input type="number" formControlName="age">
+        </div>
+
+        <div class="form-group">
+          <label>Tipo de demencia</label>
+          <input type="text" formControlName="dementiaType">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Etapa</label>
+          <select formControlName="dementiaStage">
+            <option value="">Seleccionar</option>
+            <option *ngFor="let s of dementiaStages" [value]="s">
+              {{ s }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Fecha diagnóstico</label>
+          <input type="date" formControlName="diagnosisDate">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Peso (kg)</label>
+          <input type="number" formControlName="weight">
+        </div>
+
+        <div class="form-group">
+          <label>Altura (cm)</label>
+          <input type="number" formControlName="height">
+        </div>
+      </div>
+
+      <div class="form-group checkbox">
+        <label>
+          <input type="checkbox" formControlName="isActive">
+          Paciente activo
+        </label>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn-save" (click)="submit()">Guardar</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

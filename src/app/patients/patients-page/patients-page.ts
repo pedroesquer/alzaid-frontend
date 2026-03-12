@@ -5,59 +5,76 @@ import { FormsModule } from '@angular/forms';
 import { Patient } from '../../models/patient';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar';
 import { PatientService } from '../../services/patient';
-
-type PatientRow = Patient & { id: string };
+import { NewPatientComponent } from '../component/new-patient/new-patient';
 
 @Component({
   selector: 'app-patients-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, SidebarComponent],
+  imports: [CommonModule, FormsModule, SidebarComponent, NewPatientComponent],
   templateUrl: './patients-page.html',
   styleUrl: './patients-page.css'
 })
 export class PatientsPage implements OnInit {
+
   searchTerm: string = '';
-  patients: PatientRow[] = [];
+  patients: Patient[] = [];
+  showNewPatientForm: boolean = false;
 
   constructor(private patientService: PatientService) {}
 
   ngOnInit(): void {
+    this.loadPatients();
+  }
+
+  loadPatients(): void {
     this.patientService.getPatients().subscribe({
-      next: (data: PatientRow[]) => {
+      next: (data: Patient[]) => {
         this.patients = data;
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('Error al cargar pacientes:', err);
       }
     });
   }
 
-  get filteredPatients(): PatientRow[] {
+  get filteredPatients(): Patient[] {
     const t = this.searchTerm.trim().toLowerCase();
     if (!t) return this.patients;
 
     return this.patients.filter(p =>
-      p.name.toLowerCase().includes(t) ||
-      p.id.toLowerCase().includes(t) ||
+      p.fullName.toLowerCase().includes(t) ||
+      p._id.toLowerCase().includes(t) ||
       p.dementiaType.toLowerCase().includes(t) ||
       p.dementiaStage.toLowerCase().includes(t)
     );
   }
 
+  onAddPatient(): void {
+    this.showNewPatientForm = true;
+  }
+
+  closeNewPatientModal(): void {
+    this.showNewPatientForm = false;
+    this.loadPatients();
+  }
+
   stageBadgeClass(stage: string): string {
     const s = stage.toLowerCase();
-    if (s.includes('inicial')) return 'bg-success-subtle text-success';
-    if (s.includes('inter')) return 'bg-warning-subtle text-warning-emphasis';
-    if (s.includes('avan')) return 'bg-danger-subtle text-danger';
+    if (s.includes('leve')) return 'bg-success-subtle text-success';
+    if (s.includes('moder')) return 'bg-warning-subtle text-warning-emphasis';
+    if (s.includes('sever')) return 'bg-danger-subtle text-danger';
     return 'bg-secondary-subtle text-secondary';
   }
 
-  // Métodos de acción
-  onAddPatient(): void { alert('Agregar paciente'); }
-  onView(p: PatientRow): void { alert(`Ver: ${p.name}`); }
-  onEdit(p: PatientRow): void { alert(`Editar: ${p.id}`); }
-  onDelete(p: PatientRow): void {
-    if (!confirm(`¿Eliminar a ${p.name}?`)) return;
-    this.patients = this.patients.filter(x => x.id !== p.id);
+  onView(p: Patient): void {
+    console.log('Ver paciente:', p);
+  }
+
+  onEdit(p: Patient): void {
+    console.log('Editar paciente:', p);
+  }
+
+  onDelete(p: Patient): void {
+    console.log('Eliminar paciente:', p);
   }
 }
