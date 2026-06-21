@@ -16,8 +16,9 @@ export class NewPatientComponent {
   @Output() pacienteCreado = new EventEmitter<void>();
 
   form: FormGroup;
+  isSubmitting = false;
 
-  dementiaStages = ['Leve', 'Moderada', 'Severa'];
+  dementiaStages = ['Inicial', 'Intermedia', 'Avanzada'];
 
   constructor(
     private fb: FormBuilder,
@@ -47,15 +48,28 @@ export class NewPatientComponent {
   }
 
   submit(): void {
+    if (this.isSubmitting) {
+      return;
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
+    const centerId = localStorage.getItem('centerId');
+
+    if (!centerId) {
+      console.error('No se encontro centerId para crear paciente.');
+      return;
+    }
+
+    this.isSubmitting = true;
+
     const payload = {
       fullName: this.form.value.fullName,
       age: Number(this.form.value.age),
-      centerId: '1',
+      centerId,
       dementiaType: this.form.value.dementiaType,
       dementiaStage: this.form.value.dementiaStage,
       diagnosisDate: this.form.value.diagnosisDate,
@@ -67,9 +81,9 @@ export class NewPatientComponent {
     this.patientService.createPatient(payload).subscribe({
       next: () => {
         this.pacienteCreado.emit();
-        this.close();
       },
-      error: (err) => {
+      error: (err: unknown) => {
+        this.isSubmitting = false;
         console.error('Error al crear paciente:', err);
       }
     });

@@ -63,7 +63,9 @@
 
       <div class="modal-footer">
         <button type="button" class="btn-cancel" (click)="close()">Cancelar</button>
-        <button type="submit" class="btn-save" (click)="submit()">Guardar</button>
+        <button type="submit" class="btn-save" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Guardando...' : 'Guardar' }}
+        </button>
       </div>
 
     </form>

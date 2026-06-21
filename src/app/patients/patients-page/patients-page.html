@@ -93,6 +93,7 @@
 
   <app-new-patient
     *ngIf="showNewPatientForm"
-    (cerrar)="closeNewPatientModal()">
+    (cerrar)="closeNewPatientModal()"
+    (pacienteCreado)="onPatientCreated()">
   </app-new-patient>
 </div>

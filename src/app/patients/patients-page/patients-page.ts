@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { Patient } from '../../models/patient';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar';
 import { PatientService } from '../../services/patient';
@@ -19,19 +18,29 @@ export class PatientsPage implements OnInit {
   searchTerm: string = '';
   patients: Patient[] = [];
   showNewPatientForm: boolean = false;
-
-  constructor(private patientService: PatientService) {}
+  constructor(
+    private patientService: PatientService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.loadPatients();
   }
 
   loadPatients(): void {
-    this.patientService.getPatients().subscribe({
+    const centerId = localStorage.getItem('centerId');
+
+    if (!centerId) {
+      console.error('No se encontro centerId para cargar pacientes.');
+      return;
+    }
+
+    this.patientService.getPatientsByCenter(centerId).subscribe({
       next: (data: Patient[]) => {
         this.patients = data;
+        this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: unknown) => {
         console.error('Error al cargar pacientes:', err);
       }
     });
@@ -55,6 +64,12 @@ export class PatientsPage implements OnInit {
 
   closeNewPatientModal(): void {
     this.showNewPatientForm = false;
+    this.cdr.detectChanges();
+  }
+
+  onPatientCreated(): void {
+    this.showNewPatientForm = false;
+    this.cdr.detectChanges();
     this.loadPatients();
   }
 

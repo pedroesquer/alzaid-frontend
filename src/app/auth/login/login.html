@@ -1,0 +1,56 @@
+<main class="login-page">
+  <section class="login-shell" aria-label="Inicio de sesion">
+    <div class="brand-logo">
+      <img src="assets/logo.png" alt="ALZAID" />
+    </div>
+
+    <form class="login-card" (ngSubmit)="login()">
+      <div class="card-heading">
+        <h2>Inicio de sesion</h2>
+      </div>
+
+      <label class="field">
+        <span>Correo electronico</span>
+        <input
+          type="email"
+          name="email"
+          autocomplete="email"
+          [(ngModel)]="email"
+          required
+        />
+      </label>
+
+      <label class="field">
+        <span>Contrasena</span>
+        <div class="password-field">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            autocomplete="current-password"
+            [(ngModel)]="password"
+            required
+          />
+          <button
+            type="button"
+            class="icon-button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'"
+          >
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12 5c5.1 0 8.5 4.6 9.7 6.5a1 1 0 0 1 0 1C20.5 14.4 17.1 19 12 19s-8.5-4.6-9.7-6.5a1 1 0 0 1 0-1C3.5 9.6 6.9 5 12 5Zm0 2c-3.7 0-6.4 3-7.6 5 1.2 2 3.9 5 7.6 5s6.4-3 7.6-5C18.4 10 15.7 7 12 7Zm0 2.5A2.5 2.5 0 1 1 12 14a2.5 2.5 0 0 1 0-5Z" />
+            </svg>
+          </button>
+        </div>
+      </label>
+
+      <a class="forgot-link" href="#">Olvide mi contrasena</a>
+
+      <button class="submit-button" type="submit">
+        Ingresar
+        <span aria-hidden="true">-&gt;</span>
+      </button>
+    </form>
+
+
+  </section>
+</main>
