@@ -5,11 +5,12 @@ import { Patient } from '../../models/patient';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar';
 import { PatientService } from '../../services/patient';
 import { NewPatientComponent } from '../component/new-patient/new-patient';
+import { UpdatePatientComponent } from '../component/update-patient/update-patient'; 
 
 @Component({
   selector: 'app-patients-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, SidebarComponent, NewPatientComponent],
+  imports: [CommonModule, FormsModule, SidebarComponent, NewPatientComponent, UpdatePatientComponent],
   templateUrl: './patients-page.html',
   styleUrl: './patients-page.css'
 })
@@ -18,6 +19,10 @@ export class PatientsPage implements OnInit {
   searchTerm: string = '';
   patients: Patient[] = [];
   showNewPatientForm: boolean = false;
+
+  showUpdatePatientForm: boolean = false;
+  selectedPatient: Patient | null = null;
+
   constructor(
     private patientService: PatientService,
     private cdr: ChangeDetectorRef
@@ -36,8 +41,8 @@ export class PatientsPage implements OnInit {
     }
 
     this.patientService.getPatientsByCenter(centerId).subscribe({
-      next: (data: Patient[]) => {
-        this.patients = data;
+      next: (response: any) => {
+        this.patients = response.data ? response.data : response;
         this.cdr.detectChanges();
       },
       error: (err: unknown) => {
@@ -69,8 +74,8 @@ export class PatientsPage implements OnInit {
 
   onPatientCreated(): void {
     this.showNewPatientForm = false;
-    this.cdr.detectChanges();
     this.loadPatients();
+    this.cdr.detectChanges();
   }
 
   stageBadgeClass(stage: string): string {
@@ -86,7 +91,20 @@ export class PatientsPage implements OnInit {
   }
 
   onEdit(p: Patient): void {
-    console.log('Editar paciente:', p);
+    this.selectedPatient = { ...p };
+    this.showUpdatePatientForm = true;
+    this.cdr.detectChanges(); 
+  }
+
+  closeUpdatePatientModal(): void {
+    this.showUpdatePatientForm = false;
+    this.selectedPatient = null;
+    this.cdr.detectChanges();
+  }
+
+  onPatientUpdated(): void {
+    this.closeUpdatePatientModal();
+    this.loadPatients();
   }
 
   onDelete(p: Patient): void {

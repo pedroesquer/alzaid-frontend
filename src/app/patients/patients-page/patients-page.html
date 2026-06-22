@@ -96,4 +96,10 @@
     (cerrar)="closeNewPatientModal()"
     (pacienteCreado)="onPatientCreated()">
   </app-new-patient>
+  <app-update-patient
+    *ngIf="showUpdatePatientForm"
+    [patientData]="selectedPatient"
+    (cerrar)="closeUpdatePatientModal()"
+    (pacienteActualizado)="onPatientUpdated()">
+  </app-update-patient>
 </div>
