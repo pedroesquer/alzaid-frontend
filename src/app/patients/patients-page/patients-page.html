@@ -11,6 +11,7 @@
               class="form-control border-start-0"
               placeholder="Buscar por nombre, ID o padecimiento..."
               [(ngModel)]="searchTerm"
+              (ngModelChange)="onSearchChange()"
             />
           </div>
         </div>
@@ -38,7 +39,7 @@
             </thead>
 
             <tbody>
-              <tr *ngFor="let p of filteredPatients">
+              <tr *ngFor="let p of paginatedPatients">
                 <td class="ps-4">
                   <div class="avatar placeholder-avatar">
                     {{ p.fullName.charAt(0) }}
@@ -88,6 +89,31 @@
           </table>
         </div>
       </div>
+
+      <div class="pagination-bar" *ngIf="filteredPatients.length > 0">
+        <span>
+          Página {{ currentPage }} de {{ totalPages }}
+        </span>
+
+        <div class="pagination-actions">
+          <button class="btn btn-light btn-sm" type="button" (click)="previousPage()" [disabled]="currentPage === 1">
+            Anterior
+          </button>
+
+          <button
+            *ngFor="let page of pageNumbers"
+            class="btn btn-sm page-number"
+            type="button"
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+            {{ page }}
+          </button>
+
+          <button class="btn btn-light btn-sm" type="button" (click)="nextPage()" [disabled]="currentPage === totalPages">
+            Siguiente
+          </button>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -102,4 +128,27 @@
     (cerrar)="closeUpdatePatientModal()"
     (pacienteActualizado)="onPatientUpdated()">
   </app-update-patient>
+
+  <div class="delete-modal-overlay" *ngIf="patientToDelete">
+    <div class="delete-modal">
+      <div class="delete-modal-header">
+        <h2>Eliminar paciente</h2>
+        <button class="delete-close-btn" type="button" (click)="closeDeleteModal()">×</button>
+      </div>
+
+      <p>
+        ¿Seguro que quieres eliminar a
+        <strong>{{ patientToDelete.fullName }}</strong>?
+      </p>
+
+      <div class="delete-modal-footer">
+        <button class="btn-cancel-delete" type="button" (click)="closeDeleteModal()">
+          Cancelar
+        </button>
+        <button class="btn-confirm-delete" type="button" (click)="confirmDelete()" [disabled]="isDeleting">
+          {{ isDeleting ? 'Eliminando...' : 'Eliminar' }}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

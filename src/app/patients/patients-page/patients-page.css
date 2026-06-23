@@ -60,3 +60,111 @@
 .icon-btn.danger:hover {
   background: #f8d7da;
 }
+
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.pagination-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.page-number {
+  min-width: 32px;
+  border: 1px solid #dee2e6;
+  background: #fff;
+  color: #495057;
+}
+
+.page-number.active {
+  background: #17a2a3;
+  border-color: #17a2a3;
+  color: #fff;
+}
+
+.delete-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 20px;
+}
+
+.delete-modal {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+  padding: 22px;
+}
+
+.delete-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.delete-modal-header h2 {
+  margin: 0;
+  color: #dc3545;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.delete-close-btn {
+  border: 0;
+  background: transparent;
+  color: #777;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.delete-modal p {
+  margin: 0;
+  color: #495057;
+}
+
+.delete-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.btn-cancel-delete,
+.btn-confirm-delete {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancel-delete {
+  background: #d9d9d9;
+  color: #444;
+}
+
+.btn-confirm-delete {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-confirm-delete:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}

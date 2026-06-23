@@ -18,7 +18,7 @@ export class UpdatePatientComponent implements OnInit {
   @Output() pacienteActualizado = new EventEmitter<void>();
 
   form: FormGroup;
-  dementiaStages = ['Leve', 'Moderada', 'Severa'];
+  dementiaStages = ['Inicial', 'Intermedia', 'Avanzada'];
   isSubmitting = false;
 
   constructor(
